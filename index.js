@@ -1,51 +1,44 @@
 //import the required modules
 import http from "http";
 import fs from "fs";
-
-const PORT = 3000;
-
 //create the server
 const server = http.createServer((req, res) => {
-  //get the requested url
-  let filepath = "./pages" + req.url;
-
-  //serve the different pages based on the url
+  //get the url of the requested page
+  let filePath = "./pages" + req.url;
+  //set the file paths according to the different url
   if (req.url === "/") {
-    filepath = "./pages/index.html";
+    filePath = "./pages/index.html";
   } else if (req.url === "/about") {
-    filepath = "./pages/about.html";
+    filePath = "./pages/about.html";
   } else if (req.url === "/contact") {
-    filepath = "./pages/contact.html";
-  } else {
-    filepath = "./pages/404.html";
+    filePath = filePath = "./pages/contact.html";
   }
-
   //set the content type
-  const contentType = "text/html";
-
-  //read and serve the file
-  console.log(filepath);
-  fs.readFile(filepath, (err, content) => {
-    //if the page does not exist serve a custom 404 page
+  const contentType = "/text/html";
+  //read the file and serve the different content
+  fs.readFile(filePath, (err, content) => {
+    //if an error occurs serve the custom 404 page
     if (err) {
       if (err.code === "ENOENT") {
-        fs.readFile(filepath, (error, notFound) => {
+        fs.readFile(filePath, (error, nocontent) => {
           res.writeHead(404, { "Content-Type": contentType });
-          res.end(notFound, "utf-8");
+          res.end(nocontent, "utf-8");
         });
       } else {
-        //other server error
+        //other server errors
         res.writeHead(500);
-        res.end(`Server Error: ${err.code}`);
+        res.end(`server error:${err.code}`);
       }
     } else {
-      //if success serve the requested page
+      //if the request is successful return the page
       res.writeHead(200, { "Content-Type": contentType });
       res.end(content, "utf-8");
     }
   });
 });
 
+//listen at a certain port for the results
+const PORT = 3020;
 server.listen(PORT, () => {
-  console.log(`server running at port ${PORT}`);
+  console.log(`Listening at port:${PORT}`);
 });
