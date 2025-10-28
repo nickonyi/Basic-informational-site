@@ -1,7 +1,7 @@
 //import the required modules
 import http from "http";
 import fs from "fs";
-import path from "path";
+
 const PORT = 3000;
 
 //create the server
@@ -25,7 +25,6 @@ const server = http.createServer((req, res) => {
 
   //read and serve the file
   console.log(filepath);
-
   fs.readFile(filepath, (err, content) => {
     //if the page does not exist serve a custom 404 page
     if (err) {
@@ -35,10 +34,12 @@ const server = http.createServer((req, res) => {
           res.end(notFound, "utf-8");
         });
       } else {
+        //other server error
         res.writeHead(500);
         res.end(`Server Error: ${err.code}`);
       }
     } else {
+      //if success serve the requested page
       res.writeHead(200, { "Content-Type": contentType });
       res.end(content, "utf-8");
     }
