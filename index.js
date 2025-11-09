@@ -2,7 +2,7 @@
 import http from "http";
 import fs from "fs";
 
-const PORT = 3000;
+const PORT = 3030;
 
 //create the server
 const server = http.createServer((req, res) => {
